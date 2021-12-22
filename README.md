@@ -9,7 +9,7 @@
 
 ## Usage:
 
-`python main.py -g` # Show help
+`python main.py -h` # Show help
 
 Gen: `python main.py -G`
 use to see any steps of the algo on a pdf.
