@@ -1,11 +1,10 @@
-from nfa import *
+# from nfa import * #import the NFA class from nfa.py to visualize, use it if you have it
 from random import *
 from print_color import print
 from math import floor
 from igraph import *
 import pandas as pd
 import sys
-
 
 # A color dict with all basics color
 color_dict = [
@@ -108,21 +107,6 @@ def node_score(graph):
     return [len(binhandler(node)) for node in graph]
 
 def random_graph(size):
-    """return a random graph"""
-    return tuple(randint(0,2**size) for i in range(size))
-
-def random_graph_bis(size):
-    """return a random graph V2"""
-    tab = []
-    for i in range(size):
-        tab.append(randint(0,2**size) & (~(1 << size - i - 1)))
-    for j,node in enumerate(tab):
-        for bit in binhandler(node):
-            tab[size-bit-1] = tab[size-bit-1] | (1 << size - j - 1)
-
-    return tuple(node for node in tab)
-
-def random_graph_tri(size):
     """return a random graph V3"""
     d = randint(4,10)/10
     if GRAPH_DENSITY:
@@ -177,15 +161,10 @@ def generation(G):
     print(f"Generating {GRAPH_NUMBER} random graphs...")
     for i in range(0, GRAPH_NUMBER):
         print(f"{i} ", end="") if COMPLEXITY_PRINT else None
-        new_graph = random_graph_tri(randint(3,GRAPH_SIZE))
+        new_graph = random_graph(randint(3,GRAPH_SIZE))
         print("Random graph:", new_graph) if PRINT else None
         print(f"Graph {i}:", tuple(bin(node) for node in new_graph)) if PRINT else None
         G.append(new_graph)
-
-# def complexity(i):
-#     """Increase the complexity of the algorithm"""
-#     COMPLEXITY += i
-
 
 """Main function"""
 def resolve(G, gen = False):
@@ -333,7 +312,6 @@ int(0b010000000000000010110),
 int(0b001000001000000001000),
 int(0b100000000000000001001),
 int(0b100000000000001000010)],
-        # [88, 227, 375, 959, 455, 718, 598, 251, 509, 486]
         ]
     
     if RANDOM: 
@@ -341,63 +319,11 @@ int(0b100000000000001000010)],
         GRAPHS = []
         generation(GRAPHS)
 
-    print("___________________")
     
     # Resolve the graphs
     resolve(GRAPHS, GEN)
 
-    print(PARA_LIST, RESULT_LIST)
     data = pd.DataFrame(PARA_LIST)
     R = pd.DataFrame(RESULT_LIST)
     F = pd.concat((data,R), axis=1)
-    print(F)
     F.to_csv('data.csv')
-
-
-"""
-010000000000000000011
-101000000000000000100
-010100000000000000010
-001011000000000000000
-000101100000000000000x
-000110111000000000000x
-000011010000000000000
-000001100100000000000x
-000001000100000000100
-000000011010000000000
-000000000101100000000
-000000000010100010000
-000000000000101100000
-000000000000010100001
-000000000000011010000
-000000000001000101000
-010000000000000010110
-001000001000000001000
-100000000000000001001
-100000000000001000010
-000000100000000000000
-
-000000100000000000000
-
-int(0b010000000000000000011),
-int(0b101000000000000001000),
-int(0b010100000000000000100),
-int(0b001011000000000000000),
-int(0b000101100000000000000),
-int(0b000110111000000000000),
-int(0b000011010000000000000),
-int(0b000001100100000000000),
-int(0b000001000100000000100),
-int(0b000000011010000000000),
-int(0b000000000101100000000),
-int(0b000000000010100010000),
-int(0b000000000011010000000),
-int(0b000000000000101100000),
-int(0b000000000000010100001),
-int(0b000000000000011010000),
-int(0b000000000001000101000),
-int(0b010000000000000010110),
-int(0b001000001000000001000),
-int(0b100000000000000001001),
-int(0b100000000000001000010)
-"""
